@@ -72,7 +72,7 @@ Now we need to find the vulnerable part of the program. To do this we will use a
 
 Create a script like the one below and save it as spike.spk. This script will only test the "PASS" parameter.
 
-```bash
+```
 s_readline(); # Reads the first line coming from the server
 s_string("USER test"); # Enter the string "USER test" 
 s_string("\r\n"); # Return+new line
@@ -190,6 +190,7 @@ The EIP register has been overwritten with the hex bytes 39 69 44 38. We can now
 msf-pattern_offset -l 2900 -q 39694438
 ```
 -l:lenght
+
 -q: EIP overwritten with these 4bytes found on the previous step
 
 ![](https://gblobscdn.gitbook.com/assets%2F-MOWVrxp6vAMFxx5Q4_l%2F-MPjJ6sAuABNtRO8Brop%2F-MPjPhX6PkyWa02sK_gb%2Fimage.png?alt=media&token=e1b78adc-6d2d-482d-9479-2586f58f2ba9)
