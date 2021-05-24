@@ -1,4 +1,4 @@
-# SLmail-Bof
+# Buffer Overflow - SLmail Application
 ### Introduction
 
 The below is a list to follow in order to successfully exploit the buffer overflow.
@@ -149,13 +149,14 @@ SLMail has a buffer overflow vulnerability when a PASS command with a password c
 
 Getting control of the EIP register is a crucial step of exploit development.If we control the EIP we can control the execution flow of the program.We need to locate those 4 "A" that overwrite our EIP register in the buffer. We can do this by sending a unique string of 2900 bytes, identify the 4 bytes that overwrite EIP, and then locate those four bytes in our unique buffer. We can generate a unique string with the tool msf-pattern\_create and locate those 4 bytes in our buffer using the tool msf-pattern\_offset.rb
 
-`msf-pattern_create -l 2700` \-l: length of the string. Here, the length will be 2900 same as the crash's length. This will be send to the Immunity Debugger.
+`msf-pattern_create -l 2900` \
+-l: length of the string. Here, the length will be 2900 same as the crash's length. This will be send to the Immunity Debugger.
 
 ![](https://gblobscdn.gitbook.com/assets%2F-MOWVrxp6vAMFxx5Q4_l%2F-MPjJ6sAuABNtRO8Brop%2F-MPjLbO2FGojZyIMkwrP%2Fimage.png?alt=media&token=a2577032-0802-4b26-8412-df50553abff5)
 
 In order to send the above string we need to modify the script as below:
 
-```python
+```bash
 #!/usr/bin/python
 
 import sys, socket
@@ -202,7 +203,7 @@ The script reports these 4 bytes are located at offset 2606 of the 2900 bytes.Me
 
 The offset is at 2606 bytes which means that there are 2606 bytes right before you get to the EIP and then the EIP itself is 4 bytes long. You need to overwrite those 4 bytes. Restart Immunity Debugger and SLmail (always As an Administrator) and edit the the script to look like the below:
 
-```python 
+```bash 
 #!/usr/bin/python
 
 import sys, socket
@@ -243,7 +244,7 @@ badchars = ("\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x1
 
 The null byte "\x00" is considered a bad character so I will remove it from the exploit.Change your script as below:
 
-```python 
+```bash 
 #!/usr/bin/python
 
 import sys, socket
@@ -274,7 +275,7 @@ Bad Character: 0A
 
 Now we will repeat the process without 0A to find if there is any other bad character. Remove x0a from the script and run it again. (Restart Immunity Debugger and SLmail)
 
-```python 
+```bash 
 #!/usr/bin/python
 
 import sys, socket
@@ -305,7 +306,7 @@ Run the script without the 0A character and in the Immunity Debugger select the 
 So, the character 0D is considered a bad character. You need to remove it also from the script and run it again to idenitfy any remaining bad characters.
 
 
-```python 
+```bash 
 #!/usr/bin/python
 
 import sys, socket
@@ -339,8 +340,6 @@ Run the script again and after the Immunity Debugger crashes typed at the bottom
 
 ![](https://gblobscdn.gitbook.com/assets%2F-MOWVrxp6vAMFxx5Q4_l%2F-MQHcrw_LTmw_fCLGzL0%2F-MQHkvG0gdSYPS8LGlb2%2FWindows%207-2021-01-05-15-36-32.png?alt=media&token=995e42a0-679d-4bb0-99b5-05219d14f7bc)
 
-!mona modules
-
 We need to pickup a module that meets the following criteria:
 
 -   The module we are looking for must have the ASLR and DEP field set to false.
@@ -372,7 +371,7 @@ If we redirect the EIP to this address at the time of the crash a "JMP ESP" inst
 
 I chose the first one and edit my script as below:
 
-```python 
+```bash 
 #!/usr/bin/python
 
 import sys, socket
@@ -418,7 +417,7 @@ EXITFUNC=thread: makes the exploit a little more stable
 
 Adding the payload to our script:
 
-```python 
+```bash 
 #!/usr/bin/python
 
 import sys, socket
